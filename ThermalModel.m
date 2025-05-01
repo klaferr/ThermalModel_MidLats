@@ -7,6 +7,7 @@
 %% 1. Read in parameter files and set up the variables and constants
 clear;
 
+
 % Read in parameter file:
 paramFile = 'paramFile_45Lat.txt';
 s = readStruct(paramFile);
@@ -219,13 +220,13 @@ for L04Step = s.Laskar_begin:s.Laskar_step:s.Laskar_end
         % for the equilibrium depth of pore filling ice in the
         % findEquilibriumDepth script but first set up layers
         [k, rhoc, Kappa, dz, z_ei_index, z_pf_index, depthsAtLayerBoundaries, depthsAtMiddleOfLayers, nLayers] = ...
-            setLayerProperties13(z_ei, z_pf, k_input, rhoc_input, diurnalSkinDepths, annualSkinDepths, s.layerGrowth, s.dailyLayers, s.annualLayers);
-     
+            setLayerProperties(z_ei, z_pf, k_input, rhoc_input, diurnalSkinDepths, annualSkinDepths, s.layerGrowth, s.dailyLayers, s.annualLayers);
+    
         slope = s.slope;
         slope_aspect = s.slope_aspect;
         albedo = s.albedo;
         
-        findEquilibriumDepth13
+        findEquilibriumDepth
         
         %reorgDiurnal;
     else

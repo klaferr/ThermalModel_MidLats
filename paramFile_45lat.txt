@@ -15,7 +15,7 @@ outputSaveFile '_output.txt'    | File to save temps, vapor pressures and vapor 
 dt 500                          | Timestep in seconds
 
 % Properties of the lag and diffusion
-useInputDepth y                 | n = automatically use equilibrium depth for starting depth of excess ice sheet, y to use the inputted depth below
+useInputDepth n                 | n = automatically use equilibrium depth for starting depth of excess ice sheet, y to use the inputted depth below
 initialLagThickness 0           | Thickness of the lag to start with if useInputDepth is y
 growLag n                       | n = don't grow lag deposit-hold it fixed, y = let the lag grow
 diffusionCoef 3e-4              | Diffusion coefficient of the dry regolith, in m^2/s
@@ -28,8 +28,10 @@ removeLag 0 			| if non-zero, how much lag to remove (m/yr)
 % Any other value with a 0 will be calculated using the porosity and dust content along with endmember values below
 % in the layerProperties_setup script currently configured for conductivities
 % being a linear mixture with volumetric content of rock, air and ice
-TI_input [1200;1200;1200]              | Thermal Inertia (J m-2 K-1 s-0.5)
-rhoc_input [1416800;1416800;1416800]   | Density times specific heat for each layer (J K-1 m-3)
+%TI_input [1200;1200;1200]              | Thermal Inertia (J m-2 K-1 s-0.5)
+%rhoc_input [1416800;1416800;1416800]   | Density times specific heat for each layer (J K-1 m-3)
+TI_input [2147;2147;2147]              | Thermal Inertia (J m-2 K-1 s-0.5)
+rhoc_input [1457159;1457159;1457159]   | Density times specific heat for each layer (J K-1 m-3)
 
 % Porosity/dust content properties of layers- will calculate conductivity and rhoc based on these if useInputThermo set to n, these values also used for calculating amount of ice retreat
 regolithPorosity .4             | Porosity of regolith (volumetric percent)
