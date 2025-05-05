@@ -272,3 +272,8 @@ for L04Step = s.Laskar_begin:s.Laskar_step:s.Laskar_end
     
     toc
 end
+
+plot(Temps(1, :)); hold on; plot(Temps(10, :)); plot(Temps(100, :)); legend('Depth 1', 'Depth 10', 'Depth 100'); ylabel('Temperature'); xlabel('Timestpe')
+
+figure('a', 3)
+plot(depthsAtMiddleOfLayers, Temps(:, 1)); hold on; plot(depthsAtMiddleOfLayers, Temps(:, 29695)); plot(depthsAtMiddleOfLayers, Temps(:, 2*29695));plot(depthsAtMiddleOfLayers, Temps(:, 3*29695)); legend('t=0', 't=1/4 yr', 't=1/2 year', 't=3/4 yr'); ylabel('Temperature (K)'); xlabel('Depth (m)')

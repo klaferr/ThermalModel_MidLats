@@ -1,0 +1,88 @@
+% PARAMETER FILE FOR THERMAL MODEL
+
+% ~~~ Things commonly changed ~~~
+% Slopes and reradiation
+lat 45                        | Latitude of interest in degrees
+slope 0                     | Slope of terrain in degrees
+slope_aspect 180                | Direction slope faces, 0 = north facing, 90 degrees = east facing, 180 = south facing, etc.
+slope_rerad 1                   | Whether to include reradiation in sloped case
+
+% Looping parameters to step through time  %20901
+Laskar_begin  1              | Where to start in Laskar's solutions (1 means start as far back as they go at 21 Ma, 16001 is at 5 Ma)
+Laskar_step 10                   | How often to step through Laskar's orbital solutions (10 = every 10 orbital solutions, each solution is 1000 years)
+Laskar_end 100                | How far to go in Laskar's solutions, 21001 is maximum (present day)
+outputSaveFile '_output.txt'    | File to save temps, vapor pressures and vapor densities to in date directory
+dt 500                          | Timestep in seconds
+
+% Properties of the lag and diffusion
+useInputDepth n                 | n = automatically use equilibrium depth for starting depth of excess ice sheet, y to use the inputted depth below
+initialLagThickness 0           | Thickness of the lag to start with if useInputDepth is y
+growLag n                       | n = don't grow lag deposit-hold it fixed, y = let the lag grow
+diffusionCoef 3e-4              | Diffusion coefficient of the dry regolith, in m^2/s
+atmosFactor 1                   | By how much to lower/increase the atmospheric water vapor scheme by (0 = no water vapor in atmosphere)
+removeLag 0 			| if non-zero, how much lag to remove (m/yr)
+
+% Properties of each layer (dry lag; pore filling ice; excess ice) if want to input them manually
+% Need three values listed, separated by semicolons
+% A TI for dry lag is required no matter what
+% Any other value with a 0 will be calculated using the porosity and dust content along with endmember values below
+% in the layerProperties_setup script currently configured for conductivities
+% being a linear mixture with volumetric content of rock, air and ice
+TI_input [636;636;636]              | Thermal Inertia (J m-2 K-1 s-0.5)
+rhoc_input [810800;810800;810800]   | Density times specific heat for each layer (J K-1 m-3)
+
+% Porosity/dust content properties of layers- will calculate conductivity and rhoc based on these if useInputThermo set to n, these values also used for calculating amount of ice retreat
+regolithPorosity .4             | Porosity of regolith (volumetric percent)
+icePorosity 0                   | Porosity of excess ice layer (volumetric percent)
+iceDust .0                     | Dust content in excess ice layer (volumetric percent)
+
+% Flat properties if using reradiation - for v12, right now with NPLD project, just assumes surroundings will be a stratigraphy of all excess ice
+flatAlbedo 0.8                  | Albedo of surroundings to use in calculating flat case for reradiation to slopes
+windSpeed 2.5                    | wind speed for forced convection, in m/s
+flat_TI_input [636;636;636]        | Thermal Inertia of flat terrain for reradiation (J m-2 K-1 s-0.5)
+rhoc_flat_input [810800;810800;810800]   | Density times specific heat for each layer for flat terrain for reradiation(J K-1 m-3)
+
+% ~~~ Things that don't get changed as often (but can be changed) ~~~
+% Parameters used to calculate Regolith, Pore-Filling Ice and Excess Ice Sheet Thermal Properties
+% Thermal conductivity k (W m^-1 K^-1): Water ice = 2-3.6, basalt = 1-2.3, CO2 ice = 0.6, snow = 0.07, 200 um, sand = 0.04, 10 um sand = 0.01, 1 um dust = 0.004
+% Density of subsurface (kg/m3): Water ice = 915 (warm ~273 K) - 926 (cold ~173 K), basalt = 2900, CO2 ice = 1500, snow = 200 (new, fluffy) - 540 (dense), 200 um sand (1600), 10 um sand (1300), 1 um dust (1100)
+% Specific heat c (J/(kg K)): Water ice = 1900 (warm ~273 K) - 1400 (cold ~173 K), basalt = 830-900, CO2 ice = 1000, sand, dust of any size = 850, liquid water = 4181
+% Rock properties 
+k_rock 2                      	| Conductivity of rock
+density_rock 3300               | Density of rock
+c_rock 837                      | Heat capacity of rock
+% Ice properties
+k_ice 3.2                      	| Conductivity of rock
+density_ice 920                 | Density of rock
+c_ice 1540                      | Heat capacity of rock
+
+% Orbital parameters - most not used in favor of Laskar's solutions
+a 1.52366231                    | Orbital semi-major axis
+rot 88775.2                     | Length of a solar (not sidereal) day
+elevation -3000                 | Elevation at site of interest (m) - used for CO2 Frost Point and any elevation corrections to atmospheric water vapor
+
+% Martian parameters
+g 3.727                         | Surface gravity on Mars m/s
+atmScaleHeight 10800            | Scale height in meters of atmosphere
+frostSwitch 1                   | Whether or not to include effects of frost, 1 = yes, 0 = no frost
+downwellingPerc 0.04            | How much of annual average noon insolation to use as downwelling IR, 0.04 = 4%
+scatteredVisPerc 0.02           | How much visible light is scattered, 0.02 = 2%
+Q 0.03                          | Geothermal heating.... ~30 mW
+
+% Model properties
+runTime 15                      | Total time over which model runs in years
+windupTime 5                    | Time in years to run to windup model
+impexp .5                       | Model will run implicit (1), explicit (0) or in between (Crank-Nicolson is 0.5)
+layerGrowth 1.03                | How much the layers should grow by: 3% = 1.03
+dailyLayers 15                  | How many layers to fit within diurnal skin depth at top (default, 15)
+annualLayers 6                  | How many skin depths deep to go with bottom annual skin depth (default, 6)
+convergeT .05                   | Criteria (in Kelvins) to check for convergence in windup
+saveParamFile y                 | Whether or not to automatically save parameter file; n = no, y = yes
+
+% Other properties
+initSurfTemp 165                | Initial surface temperature to use for very first run, in Kelvins
+albedo 0.8                      | Surface albedo, dusty is often ~.25, dark areas/lack of dust ~0.1, icy north polar ~0.45
+albedoFrost 0.65                | CO2 albedo
+emis 1.0                        | Surface emissivity at infrared wavelengths
+emisFrost .9                    | emissivity of CO2 frost
+L_CO2 589900                    | Latent heat of CO2, J/kg
